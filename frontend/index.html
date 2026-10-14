@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-Agent AI Assistant</title>
+    <meta
+      name="description"
+      content="Multi-Agent AI Assistant for study help, coding, writing, and everyday questions."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["$", "$"], ["\\(", "\\)"]],
+          displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+        },
+        startup: {
+          typeset: false,
+          ready: () => {
+            window.MathJax.startup.defaultReady();
+            document.dispatchEvent(new Event("mathjax-ready"));
+          }
+        }
+      };
+    </script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="intro-screen" id="introScreen" aria-labelledby="introHeading" hidden>
+      <div class="intro-glow intro-glow-one" aria-hidden="true"></div>
+      <div class="intro-glow intro-glow-two" aria-hidden="true"></div>
+      <div class="intro-content">
+        <div class="intro-brand">Multi-Agent AI Assistant</div>
+        <div class="intro-logo" aria-hidden="true">
+          <span class="intro-orbit intro-orbit-one"></span>
+          <span class="intro-orbit intro-orbit-two"></span>
+          <span class="intro-orbit intro-orbit-three"></span>
+          <span class="intro-logo-core">AI</span>
+          <span class="intro-particle intro-particle-one"></span>
+          <span class="intro-particle intro-particle-two"></span>
+          <span class="intro-particle intro-particle-three"></span>
+        </div>
+        <h1 id="introHeading">Welcome to Multi-Agent AI Assistant</h1>
+        <p class="intro-subtitle">Your intelligent partner for learning, coding, writing, and more.</p>
+        <div class="intro-progress" role="progressbar" aria-label="Initializing your AI workspace" aria-valuemin="0" aria-valuemax="100">
+          <span class="intro-progress-fill"></span>
+        </div>
+        <p class="intro-status" aria-live="polite">Initializing your AI workspace...</p>
+      </div>
+      <button class="intro-skip" id="skipIntro" type="button">Skip intro</button>
+    </section>
+
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+        <div class="brand-header">
+          <div class="brand-mark" aria-hidden="true">M</div>
+          <div class="brand-copy">
+            <h1>Multi-Agent</h1>
+            <p>Study · Code · Write</p>
+          </div>
+        </div>
+
+        <button class="primary-button" id="newChatBtn" type="button" aria-label="Start a new chat">
+          + New Chat
+        </button>
+
+        <div class="sidebar-section">
+          <p class="section-label">HISTORY</p>
+          <button class="tool-button sidebar-tool" type="button" id="sidebarHistoryBtn" aria-label="Open search history">🕘 History</button>
+          <div class="history-panel hidden" id="historyPanel" aria-live="polite">
+            <div class="history-header">
+              <h3>Search History</h3>
+              <button type="button" id="closeHistoryBtn" aria-label="Close history">×</button>
+            </div>
+            <input
+              id="historySearchInput"
+              type="search"
+              placeholder="Search previous prompts..."
+              aria-label="Search previous prompts"
+            />
+            <ul id="historyList"></ul>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <p class="section-label">TOOLS</p>
+          <button class="tool-button sidebar-tool" type="button" id="sidebarVoiceBtn" aria-label="Use voice input">🎙️ Voice</button>
+          <button class="tool-button sidebar-tool" type="button" id="uploadImageBtn" aria-label="Upload images">🖼️ Images</button>
+          <input
+            id="imageFileInput"
+            class="visually-hidden"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            multiple
+            tabindex="-1"
+            aria-hidden="true"
+          />
+          <button class="tool-button sidebar-tool" type="button" id="uploadDocumentBtn" aria-label="Upload documents">📄 Documents</button>
+          <input
+            id="documentFileInput"
+            class="visually-hidden"
+            type="file"
+            accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"
+            multiple
+            tabindex="-1"
+            aria-hidden="true"
+          />
+          <small class="upload-note">Images, PDF, TXT, and Markdown · up to 5 files, 20 MB total. Files are sent to Gemini when you send your message.</small>
+        </div>
+
+        <div class="sidebar-section">
+          <p class="section-label">QUICK ACTIONS</p>
+          <button class="quick-action" type="button" data-prompt="Explain artificial intelligence in simple terms.">
+            Learn AI
+          </button>
+          <button class="quick-action" type="button" data-prompt="Write a Python program to calculate the factorial of a number.">
+            Write Code
+          </button>
+          <button class="quick-action" type="button" data-prompt="Give me project ideas for an AI or web development assignment.">
+            Project Ideas
+          </button>
+          <button class="quick-action" type="button" data-prompt="Help me understand a difficult concept in a simple way.">
+            Study Help
+          </button>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="theme-button" id="sidebarThemeBtn" type="button" aria-label="Toggle dark mode">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <button class="ghost-button" id="clearChatBtn" type="button" aria-label="Clear current chat">
+            Clear Chat
+          </button>
+          <br>
+ 
+        
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="mobile-menu" id="mobileMenuBtn" type="button" aria-label="Open sidebar menu">
+              ☰
+            </button>
+            <div>
+              <h2>Multi-Agent AI Assistant</h2>
+            </div>
+          </div>
+
+          <div class="topbar-status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Ready to chat</span>
+          </div>
+
+          <button class="theme-toggle" id="themeToggleMain" type="button" aria-label="Toggle theme">
+            🌙
+          </button>
+        </header>
+
+        <section class="welcome-panel" id="welcomePanel">
+          <div class="welcome-card">
+            <div class="welcome-tag">Hello, I'm your Multi-Agent Assistant 👋</div>
+            <h3>One assistant. Four specialists.</h3>
+            <p>Ask a question and the right assistant will help with study, code, writing, or everyday topics.</p>
+          </div>
+
+          <div class="agent-chips" aria-label="Available specialist agents">
+            <span>Study Agent</span>
+            <span>Coding Agent</span>
+            <span>Writing Agent</span>
+            <span>General Assistant Agent</span>
+          </div>
+
+          <div class="suggestion-grid">
+            <button class="suggestion-card" type="button" data-prompt="Explain artificial intelligence in simple terms.">
+              <span class="card-icon">📚</span>
+              <span class="card-title">Learn something</span>
+              <span class="card-subtitle">Ask about AI</span>
+            </button>
+
+            <button class="suggestion-card" type="button" data-prompt="Give me creative project ideas for a college AI assignment.">
+              <span class="card-icon">💡</span>
+              <span class="card-title">Get ideas</span>
+              <span class="card-subtitle">Find creative ideas</span>
+            </button>
+
+            <button class="suggestion-card" type="button" data-prompt="Write a Python program for a beginner-friendly task.">
+              <span class="card-icon">💻</span>
+              <span class="card-title">Write code</span>
+              <span class="card-subtitle">Programming help</span>
+            </button>
+
+            <button class="suggestion-card" type="button" data-prompt="Explain a difficult topic in an easier way with examples.">
+              <span class="card-icon">🧠</span>
+              <span class="card-title">Study help</span>
+              <span class="card-subtitle">Understand concepts</span>
+            </button>
+          </div>
+        </section>
+
+        <div class="chat-container" id="chatContainer" aria-live="polite"></div>
+
+        <div class="typing-indicator hidden" id="typingIndicator" aria-label="AI is typing">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+
+        <form class="composer" id="chatForm" novalidate>
+          <div class="pending-files hidden" id="pendingFiles" aria-live="polite"></div>
+          <div class="input-shell">
+            <textarea
+              id="userInput"
+              rows="1"
+              placeholder="Ask Multi Agent Assistant anything..."
+              aria-label="Ask Multi Agent Assistant anything"
+            ></textarea>
+            <button class="send-button" type="submit" aria-label="Send message">
+              Send
+            </button>
+          </div>
+          <div class="composer-note">
+            <small>Enter to send · Shift+Enter for a new line.</small>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
